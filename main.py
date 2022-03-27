@@ -1,5 +1,4 @@
 
-from pickle import FALSE
 import numpy as np
 import matplotlib.pyplot as plt
 import pydicom
@@ -111,8 +110,7 @@ def apply_windowing(min,max):
 sg.theme("BluePurple")
 
 layout1 = [[sg.Text("Seleccionar carpeta" ,size=(8,1)),sg.Input(key="-FOLDER-"),sg.FolderBrowse(),sg.Button("Ir"),
-           sg.Text("Windowing"),sg.Input(key="wMin",size=(4,1)),sg.Input(key="wMax",size=(4,1)),sg.Button("Aplicar W"),
-           sg.Text("SubImagen"),sg.Input(key="sMin",size=(4,1)),sg.Input(key="sMax",size=(4,1)),sg.Button("Aplicar Sub")],]
+           sg.Text("Windowing"),sg.Input(key="wMin",size=(4,1)),sg.Input(key="wMax",size=(4,1)),sg.Button("Aplicar W")],]
 
 layout2 = [[sg.Canvas(key='-CANVAS-')],]
 
@@ -165,11 +163,9 @@ while True:
         slider.Update(range=(0, MAX_SLIDER))
 
         img = obtain_image_slice(dcm_data)
+        clean_canvas("fig_agg")
+        clean_canvas("fig_second")
         show_canvas(img)
-
-        window["-COL2-"].update(visible=True)
-        window["-COL3-"].update(visible=True)
-        window["sliders"].update(visible=True)
 
     if event == "Cambiar slice":
         SLICE = int(values["-SLIDER-"])
@@ -179,7 +175,7 @@ while True:
         window.refresh()
 
     if event == "Aplicar W":
-        print("Hola")
+ 
         data = apply_windowing(float(values['wMin']),float(values['wMax']))
         clean_canvas('fig_second')
         show_canvas_sec(data)
